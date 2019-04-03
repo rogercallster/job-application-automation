@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:if="${message}">
+    <h2 th:text="${message}"/>
+</div>
+
+
+<div>
+    <form method="post" action="/user" enctype="multipart/form-data">
+    <!--<form method="POST" enctype="multipart/form-data" action="/">-->
+        <table>
+            <tr><td>First Name:</td><td><input type="string" name="firstName" /></td></tr>
+            <tr><td>Last Name:</td><td><input type="string" name="lastName" /></td></tr>
+            <tr><td>Phone Number:  +1:</td><td><input type="integer" name="phoneNumber" /></td></tr>
+            <tr><td>City:</td><td><input type="string" name="city" /></td></tr>
+            <tr><td>State:</td><td><input type="string" name="state" /></td></tr>
+            <tr><td>Country:</td><td><input type="string" name="country" /></td></tr>
+            <tr><td>ZIP code:</td><td><input type="integer" name="zip" /></td></tr>
+            <tr><td>Email Address:</td><td><input type="string" name="email" /></td></tr>
+            <tr><td>Linkedin Home:</td><td><input type="url" name="linkedinHome" /></td></tr>
+            <tr><td>Do you have any disability:</td><td><input type="checkbox" name="disability" /></td></tr>
+            <tr><td>Race (Asian):</td><td><input type="string" name="race" /></td></tr>
+            <tr><td>Are you a vetran:</td><td><input type="checkbox" name="vetran" /></td></tr>
+
+
+
+
+            <tr><td>File to upload:</td><td><input type="file" name="cv" /></td></tr>
+            <!--<tr><td></td><td><input type="submit" value="Upload" /></td></tr>-->
+
+            <tr><td></td><td><input type="submit" value="SUBMIT" ></td></tr>
+
+        </table>
+    </form>
+</div>
+
+<div>
+    <ul>
+        <li th:each="file : ${files}">
+            <a th:href="${file}" th:text="${file}" />
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
