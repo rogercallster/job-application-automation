@@ -51,16 +51,18 @@
 <script type="text/javascript">
 
   function upload() {
-      const form = document.getElementById("createUser");
-      const cv = document.getElementById('cv').files[0];
-      console.log(cv);
-      console.log(cv.name);
-      console.log(form.method +  " "+ form.target + " " + form.enctype);
-      <!--const cv = document.getElementById('cv').files[0];-->
-        var xhr = new XMLHttpRequest();
-        xhr.open(form.method, form.target, true);
-        <!--xhr.setRequestHeader('Content-Type', form.enctype);-->
-        xhr.send(cv);
+
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+    let cv = document.getElementById('cv').files[0];
+    let cover = document.getElementById('cover').files[0];
+console.log("cover" + cover.name);
+    formData.append("cv", cv);
+    formData.append("cover", cover);
+    xhr.onreadystatechange = state => { console.log(xhr.status); } // err handling
+    xhr.open("POST", '/upload');
+    console.log(formData);
+    xhr.send(formData);
 
   }
 
