@@ -1,4 +1,10 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
 <body>
 
 <div th:if="${message}">
@@ -7,11 +13,16 @@
 
 
 <div>
-    <form method="post" action="/user" enctype="multipart/form-data">
-    <!--<form method="POST" enctype="multipart/form-data" action="/">-->
+    <form id="createUser" action="/user" method="post">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!--method="post"-->
+        <!--enctype="multipart/form-data">-->
+        <!--<form method="POST" enctype="multipart/form-data" action="/">-->
+
         <table>
-            <tr><td>First Name:</td><td><input type="string" name="firstName" /></td></tr>
-            <tr><td>Last Name:</td><td><input type="string" name="lastName" /></td></tr>
+            <tr><td>First Name:</td><td><input type="string" name="firstName" class="aaaa" /></td></tr>
+            <tr><td>Last Name:</td><td><input type="string" name="lastName" class="aaaa"/></td></tr>
             <tr><td>Phone Number:  +1:</td><td><input type="integer" name="phoneNumber" /></td></tr>
             <tr><td>City:</td><td><input type="string" name="city" /></td></tr>
             <tr><td>State:</td><td><input type="string" name="state" /></td></tr>
@@ -19,22 +30,71 @@
             <tr><td>ZIP code:</td><td><input type="integer" name="zip" /></td></tr>
             <tr><td>Email Address:</td><td><input type="string" name="email" /></td></tr>
             <tr><td>Linkedin Home:</td><td><input type="url" name="linkedinHome" /></td></tr>
-            <tr><td>Do you have any disability:</td><td><input type="checkbox" name="disability" /></td></tr>
+            <tr><td>Disability:</td><td><input type="checkbox" name="disability" /></td></tr>
             <tr><td>Race (Asian):</td><td><input type="string" name="race" /></td></tr>
             <tr><td>Are you a vetran:</td><td><input type="checkbox" name="vetran" /></td></tr>
-
-
-
-
-            <tr><td>File to upload:</td><td><input type="file" name="cv" /></td></tr>
-            <!--<tr><td></td><td><input type="submit" value="Upload" /></td></tr>-->
-
-            <tr><td></td><td><input type="submit" value="SUBMIT" ></td></tr>
-
+            <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
         </table>
+        <div>
+            <td>File to upload:</td><td><input type="file" name="cv" /></td>
+            <b/>
+            <td></td><td><input type="submit" value="SUBMIT"  ></td>
+        </div>
     </form>
 </div>
+<div class="results">TEST TEST :: -> </div>
 
+<script type="text/javascript">
+ (function($) {
+      $.extend({
+          toDictionary: function(query, o) {
+              <!--var parms = {};-->
+              var items = query.split("&"); // split
+              for (var i = 0; i < items.length; i++) {
+                  var values = items[i].split("=");
+                  var key = decodeURIComponent(values.shift());
+                  var value = values.join("=");
+                  <!--parms[key] = decodeURIComponent(value);-->
+                  o[key]=decodeURIComponent(value);
+              }
+              <!--return (parms);-->
+          }
+      })
+  })(jQuery);
+
+
+  (function($) {
+      $.fn.serializeFormJSON = function() {
+          var o = {};
+          $(this).find('tr').each(function() {
+              var elements = $(this).find('test')
+              console.log($(this));
+              <!--if (elements.length > 0) {-->
+                  var serialized = $(this).find('input, textarea, select').serialize();
+                  var item = $.toDictionary(serialized , o);
+              <!--}-->
+          });
+          return o;
+      };
+  })(jQuery);
+
+  $("#createUser").submit(function(event) {
+      event.preventDefault();
+      var rawData = $('#createUser').serializeFormJSON();
+      var form = document.getElementById("createUser");
+      console.log(rawData);
+      var formData = JSON.stringify(rawData);
+      $('.results').append(formData);
+      console.log(formData);
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action, true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhr.send(JSON.stringify(formData));
+
+
+
+  });
+</script>
 <div>
     <ul>
         <li th:each="file : ${files}">
