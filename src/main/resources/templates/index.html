@@ -13,7 +13,7 @@
 
 
 <div>
-    <form id="createUser" action="/user" method="post">
+    <form id="createUser" action="/user" method="post" target="/upload"  enctype="multipart/form-data">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
         <!--method="post"-->
@@ -33,11 +33,15 @@
             <tr><td>Disability:</td><td><input type="checkbox" name="disability" /></td></tr>
             <tr><td>Race (Asian):</td><td><input type="string" name="race" /></td></tr>
             <tr><td>Are you a vetran:</td><td><input type="checkbox" name="vetran" /></td></tr>
-            <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
         </table>
+        <table>
+            <tr><td>CV</td><td> <input id="cv" name="cv" type="file"/></td></tr>
+            <tr><td>Cover Letter</td><td><input id="cover" name="coverLetter" type="file" /></td></tr>
+            <td></td><td><input type="button" value="Upload" onclick="upload()"/></td>
+        </table>
+
         <div>
-            <td>File to upload:</td><td><input type="file" name="cv" /></td>
-            <b/>
+            <!--<td>File to upload:</td><td><input type="file" name="cv" /></td>-->
             <td></td><td><input type="submit" value="SUBMIT"  ></td>
         </div>
     </form>
@@ -45,6 +49,23 @@
 <div class="results">TEST TEST :: -> </div>
 
 <script type="text/javascript">
+
+  function upload() {
+      const form = document.getElementById("createUser");
+      const cv = document.getElementById('cv').files[0];
+      console.log(cv);
+      console.log(cv.name);
+      console.log(form.method +  " "+ form.target + " " + form.enctype);
+      <!--const cv = document.getElementById('cv').files[0];-->
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.target, true);
+        <!--xhr.setRequestHeader('Content-Type', form.enctype);-->
+        xhr.send(cv);
+
+  }
+
+
+
  (function($) {
       $.extend({
           toDictionary: function(query, o) {
@@ -77,6 +98,7 @@
           return o;
       };
   })(jQuery);
+
 
   $("#createUser").submit(function(event) {
       event.preventDefault();
